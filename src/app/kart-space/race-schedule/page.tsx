@@ -10,7 +10,7 @@ export default async function RaceSchedulePage() {
     method: 'GET'
   })
 
-  const races: RacesType[] = await fetchInstanceWithCookies(`/track/${trackId}/races`, {
+  const races: RacesType[] = await fetchInstanceWithCookies(`/track/${trackId}/races/detailed`, {
     method: 'GET',
   })
 

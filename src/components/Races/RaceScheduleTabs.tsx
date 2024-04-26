@@ -75,6 +75,7 @@ export const RaceTab = ({
           <>
             {race.racersProfiles.map((racerProfile) => (
               <RacerTableRow 
+                key={racerProfile.id}
                 trackId={trackId}
                 raceId={race.id}
                 racerProfile={{
