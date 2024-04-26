@@ -11,7 +11,7 @@ export default async function RaceSchedulePage() {
   })
 
   const races: RacesType[] = await fetchInstanceWithCookies(`/track/${trackId}/races`, {
-    method: 'GET'
+    method: 'GET',
   })
 
   return (
