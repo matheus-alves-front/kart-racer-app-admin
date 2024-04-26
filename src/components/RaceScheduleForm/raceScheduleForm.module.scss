@@ -1,0 +1,48 @@
+@import '/src/styles/theme.scss';
+
+.Form {
+  padding: 1rem;
+  
+  fieldset {
+    display: flex;
+    align-items: center;
+    padding-bottom: 1rem;
+    justify-content: flex-end;
+  
+    &:not(.resume) {
+      justify-content: space-between;
+    }
+
+    > div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: .4rem;
+
+      input {
+        @include Input(0 10px, 50px);
+        text-align: center;
+      }
+    
+      label {
+        text-align: center;
+      }
+    }
+    
+    button {
+      padding: 1rem;
+      border-radius: 1rem;
+      background-color: $primary;
+      color: $black;
+      border: 0;
+      font-size: 1rem;
+      transition: .2s ease;
+      margin-left: 1rem;
+
+      &:hover {
+        opacity: .8;
+      }
+    } 
+  }
+}

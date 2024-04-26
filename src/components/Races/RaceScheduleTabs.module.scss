@@ -1,0 +1,110 @@
+@import '/src/styles/theme.scss';
+
+.Section {
+  padding: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+
+  nav {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+
+    button {
+      padding: 10px 20px;
+      background-color: rgba(255,255,255,.2);
+      border: 0;
+      border-radius: 20px;
+      color: $white;
+      transition: .3s ease;
+
+      &:hover {
+        background-color: rgba(255,255,255,.1);
+      }
+    }
+  }
+  .RaceTab {
+    background-color: rgba(255,255,255,.1);
+    border-radius: 20px;
+    padding: 1rem;
+    flex: 1;
+
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 1rem;
+
+    .resume {
+      text-align: end;
+      padding-right: 1rem;
+      border-right: 1.1px solid $white;
+
+      h2 {
+        small {
+          font-size: 1rem;        
+        }
+      }
+
+      > div {
+        padding-bottom: .4rem;
+
+        select, span {
+          display: inline-block;
+          margin: 0 5px;
+          
+          &.values {
+            width: 100px;
+            text-align: center;
+            background-color: $gray;
+            color: $black;
+            border-radius: 20px;
+          }
+        }
+
+        select {
+          width: 100px;
+          height: 30px;
+          border-radius: 10px;
+          background-color: $gray;
+        }
+      }
+
+      button {
+        padding: .8rem;
+        border: 0;
+        background-color: $primary;
+        color: $black;
+        border-radius: 10px;
+        margin-top: .4rem;
+      }
+    }
+
+    .drivers {
+      flex: 1;
+
+      .racerProfile {
+        width: 100%;
+        padding: .6rem 0;
+        border-bottom: 1px solid $secondary;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+
+        button {
+          border: 0;
+          padding: 6px 1rem;
+          background-color: $red;
+          border-radius: 10px;
+          transition: .3s ease;
+
+          &:hover {
+            opacity: .8;
+          }
+        }
+      }
+    }
+  }
+}

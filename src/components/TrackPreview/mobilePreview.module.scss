@@ -1,0 +1,72 @@
+@import '/src/styles/theme.scss';
+
+.mobilePreview {
+  flex: 1;
+
+  .device {
+    border: 6px solid $black;
+    overflow: auto;
+    border-radius: 15px;
+    height: 76dvh;
+    margin: auto;
+    padding: 1rem;
+    background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(114,114,114,1) 100%);
+    width: 70%;
+    min-width: 300px;
+
+    @media (max-width: 1100px) {
+      width: 80%;
+    }
+
+    header {
+      text-align: center;
+      h5 {
+        padding: 1rem 0;
+      }
+
+      img {
+        border-radius: 1rem;
+      }
+    }
+
+    nav {
+      padding-bottom: 1rem;
+
+      button {
+        background-color: transparent;
+        border: 0;
+        border-bottom: 2px solid $primary;
+        color: $white;
+        padding: 1rem;
+        font-weight: 600;
+      }
+    }
+
+    article {
+      padding-bottom: 2rem;
+      max-width: 100%;
+      p {
+        padding-bottom: .4rem;
+      }
+      span {
+        padding-right: .4rem;
+      }
+      button {
+        background-color: $primary;
+        font-size: .8rem;
+        padding: .2rem 1rem;
+        color: $black;
+        border: 0;
+        border-radius: 1rem;
+      }
+    }
+
+    > button {
+      width: 100%;
+      background-color: $black;
+      color: $white;
+      padding: 1rem;
+      border-radius: 1rem;
+    }
+  }
+}
