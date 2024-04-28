@@ -1,17 +1,19 @@
 'use client'
-import { RacesType } from "@/@types/types"
+import { RaceCategories, RacesType } from "@/@types/types"
 import styles from './RaceScheduleTabs.module.scss'
 import { michromaClassName } from "@/constants/font"
-import { useState } from "react"
+import { ChangeEvent, useState } from "react"
 import { fetchInstanceWithCookies } from "@/api/fetchInstances"
 import { useRouter } from "next/navigation"
 
 export const RaceScheduleTabs = ({
   races,
-  trackId
+  trackId,
+  categories
 }: {
   races: RacesType[],
-  trackId: string
+  trackId: string,
+  categories: RaceCategories[]
 }) => {
   const [activeRaceTab, setActiveRaceTab] = useState(races[0])
   return (
@@ -28,7 +30,7 @@ export const RaceScheduleTabs = ({
         ))}
       </nav>
       {races.length ? 
-        <RaceTab trackId={trackId} race={activeRaceTab} />
+        <RaceTab categories={categories} trackId={trackId} race={activeRaceTab} />
       : null}
     </div>
   )
@@ -36,19 +38,75 @@ export const RaceScheduleTabs = ({
 
 export const RaceTab = ({
   race,
-  trackId
+  trackId,
+  categories
 }: {
   race: RacesType,
-  trackId: string
+  trackId: string,
+  categories: RaceCategories[]
 }) => {
+  const [isScheduled, setIsScheduled] = useState(race.isScheduled)
+  const onReservedChange = async (e: ChangeEvent<HTMLSelectElement>) => {
+    const isReserved = e.target.value === 'true'
+
+    await fetchInstanceWithCookies(`/track/${trackId}/races/${race.id}`, {
+      method: 'PATCH',
+      body: JSON.stringify({
+        isReserved: isReserved
+      })
+    })
+  }
+
+  const onRacerHostChange = async (e: ChangeEvent<HTMLSelectElement>) => {
+    const newRacerHost = e.target.value
+    await fetchInstanceWithCookies(
+      `track/${trackId}/races/changeHost/${race.id}/from/${race.racerHostProfile.id}/to/${newRacerHost}`, {
+      method: 'POST',
+    })
+  }
+
+  const scheduleRace = async (isScheduled: boolean) => {
+    await fetchInstanceWithCookies(`/track/${trackId}/races/${race.id}`, {
+      method: 'PATCH',
+      body: JSON.stringify({
+        isScheduled
+      })
+    })
+    setIsScheduled(isScheduled)
+  }
+
+  const handleCategoryRace = async (e: ChangeEvent<HTMLSelectElement>) => {
+    const categoryId = e.target.value
+
+    if (!race.category) {
+      await fetchInstanceWithCookies(`/track/${trackId}/races/${race.id}/addCategory/${categoryId}`, {
+        method: 'POST'
+      })
+
+      return
+    }
+
+    await fetchInstanceWithCookies(
+      `/track/${trackId}/races/${race.id}/changeCategory/from/${race.category.id}/to/${categoryId}`, {
+      method: 'POST'
+    })
+  }
+
   return (
     <div className={styles.RaceTab}>
       <div className={styles.resume}>
         <h2>Corrida: <small>{race.time}</small></h2>
         <div>
           <span>Categoria:</span>
-          <select name="categories" id="categoriesSelect">
-            <option value="">13hp</option>
+          <select onChange={handleCategoryRace} className={michromaClassName} name="categories" id="categoriesSelect">
+            <option 
+                value={race.category ? race.category.id : ''}
+            >
+              {race.category ? race.category.name : null}
+            </option>
+            {categories.map((category) => (
+              <option defaultChecked={category.id === race.category?.id} key={category.id} value={category.id}>{category.name}</option>
+            ))}
           </select>
         </div>
         <div>
@@ -64,10 +122,37 @@ export const RaceTab = ({
           <span className={styles.values}>{race.sessions.raceMinutes}min</span>
         </div>
         <div>
-          <span>Reserva:</span>
-          <span className={styles.values}>{race.racerHost ? race.racerHost.name : null}</span>
+          <span>Reservado:</span>
+          <select onChange={onReservedChange} className={michromaClassName} name="isReserved" id="isReservedSelect">
+              <option defaultChecked={race.isReserved} value="true">Sim</option>
+              <option defaultChecked={!race.isReserved} value="false">Não</option>
+          </select>
         </div>
-        <button className={michromaClassName}>Confirmar</button>
+        <div>
+          <span>Organizador:</span>
+          <select onChange={onRacerHostChange} className={michromaClassName} name="racerHost" id='racerHost'>
+            <option 
+              value={race.racerHostProfile ? race.racerHostProfile.id : ''}
+            >
+              {race.racerHostProfile ? race.racerHostProfile.name : null}
+            </option>
+            {race.racersProfiles ? 
+            <>
+              {race.racersProfiles.map((racerProfile) => {
+                if (racerProfile.id === race.racerHostProfile.id) return null
+                return(
+                  <option value={racerProfile.id}>{racerProfile.name}</option>
+                )
+              }
+              )}
+            </>
+            : null}
+          </select>
+        </div>
+        {isScheduled 
+        ? <button onClick={() => scheduleRace(false)} className={`${michromaClassName} ${styles.cancel}`}>Cancelar Corrida</button>
+        : <button onClick={() => scheduleRace(true)} className={michromaClassName}>Confirmar Corrida</button>
+        }
       </div>
       <div className={styles.drivers}>
         <h2>Pilotos:</h2>

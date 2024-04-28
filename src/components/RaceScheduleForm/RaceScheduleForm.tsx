@@ -137,8 +137,11 @@ export const RaceScheduleForm = ({
         </div>
       </fieldset>
       <fieldset className={styles.resume}>
-        <span>Corridas de {raceInterval} em {raceInterval} minutos:</span>
-        <button className={michromaClassName} type="submit">Gerar Corridas</button> 
+        <p>Dica: Os horários devem ser no formato 00:00 e os minutos devem ser apenas números. </p>
+        <div className={styles.result}>
+          <span>Corridas de {raceInterval} em {raceInterval} minutos:</span>
+          <button className={michromaClassName} type="submit">Gerar Corridas</button> 
+        </div>
       </fieldset>
     </form>
   )

@@ -6,13 +6,14 @@
   fieldset {
     display: flex;
     align-items: center;
+    padding: 0 2rem;
     padding-bottom: 1rem;
-    justify-content: flex-end;
-  
-    &:not(.resume) {
-      justify-content: space-between;
-    }
+    justify-content: space-between;
 
+    .result {
+      flex-direction: row;
+    }
+    
     > div {
       display: flex;
       align-items: center;

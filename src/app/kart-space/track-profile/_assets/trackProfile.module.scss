@@ -1,0 +1,181 @@
+@import '/src/styles/theme.scss';
+
+.EditPage {
+  width: 100%;
+  min-height: 80dvh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  padding: 1rem;
+
+  h1 {
+    width: 100%;
+    @include h1Style;
+    text-align: center;
+
+    @media (max-width: 600px) {
+      @include h2Style;
+    }
+  }
+
+  form.edit {
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: 1rem 0;
+    max-width: 100%;
+    width: 40%;
+
+    @media (max-width: 600px) {
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr 1fr;
+      width: 100%;
+    }
+
+    fieldset {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      row-gap: .5rem;
+
+      &.loginCredentials {
+        > div > div {
+          padding-bottom: 1rem;
+        }
+      }
+
+      div {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+
+        &.half {
+          width: 49%;
+          justify-content: center;
+          
+          &.right { 
+            float: right;
+          }
+
+          label {
+            text-align: center;
+          }
+        }
+
+        input {
+          @include Input(0 10px);
+          text-align: center;
+        }
+
+        label {
+          padding-bottom: .5rem;
+          font-size: .9rem;
+          white-space: nowrap;
+        }
+      }
+
+      > button {
+        width: 100%;
+        padding: 1.4rem;
+        border-radius: 1rem;
+        background-color: $primary;
+        color: $black;
+        border: 0;
+        font-size: 1.4rem;
+        transition: .2s ease;
+
+        &:hover {
+          opacity: .8;
+        }
+      } 
+    }
+  }
+
+  .categories {
+    padding: 1rem;
+    max-width: 100%;
+    width: 60%;
+
+    > button {
+      width: 100%;
+      background-color: $gray;
+      border: 0;
+      padding: 1rem;
+      border-radius: 14px;
+      font-size: 1.2rem;
+      transition: .2s ease;
+      margin-top: 2rem;
+
+      &:hover {
+        opacity: .8;
+      }
+    }
+
+    form {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      padding: .5rem 0;
+
+      fieldset {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 33%;
+        padding-bottom: 1rem;
+
+        input {
+          @include Input(0 10px);
+          text-align: center;
+        }
+  
+        label {
+          padding-bottom: .5rem;
+          font-size: .9rem;
+          text-align: center;
+          white-space: nowrap;
+        }
+      }
+
+      &:not(.update) {
+        button {
+          width: 100%;
+          background-color: $primary;
+          padding: 1rem;
+          border: 0;
+          border-radius: 10px;
+  
+          &:hover {
+            opacity: .8;
+          }
+        }
+      }
+
+      &.update {
+        flex-wrap: wrap;
+        max-width: 100%;
+        background-color: rgba(0,0,0,0.3);
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 4px;
+        align-items: flex-end;
+
+        fieldset {
+          max-width: 25%;
+          width: 25%;
+          padding-bottom: 0;
+        }
+
+        button {
+          max-width: 25%;
+          width: 25%;
+          padding: 1rem .4rem;
+          border-radius: 10px;
+          border: 0;
+        }
+      }
+    }
+  }
+}

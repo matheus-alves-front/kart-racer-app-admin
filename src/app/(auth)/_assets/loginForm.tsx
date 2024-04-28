@@ -31,8 +31,6 @@ export const LoginForm = () => {
       body: JSON.stringify(submitObject)
     })
 
-    console.log(registerResponse)
-
     if (registerResponse.token) {
       await setCookies('loginToken', registerResponse.token)
       await setCookies('trackId', registerResponse.trackProfile.id)

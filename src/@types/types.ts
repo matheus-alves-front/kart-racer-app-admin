@@ -17,7 +17,7 @@ type RaceSessions = {
   raceLaps?: number
 }
 
-type RaceCategories = {
+export type RaceCategories = {
   id: string,
   name: string,
   price: string,
@@ -67,10 +67,11 @@ export interface RacesType {
   sessions: RaceSessions,
   isFinished: boolean,
   isScheduled: boolean,
+  isReserved: boolean,
 
   category?: RaceCategories,
   track: TrackType,
-  racerHost: RacerProfileType,
+  racerHostProfile: RacerProfileType,
   racersProfiles: RacerProfileType[]
 }
 
