@@ -1,10 +1,11 @@
 'use client'
 import { michromaClassName } from '@/constants/font'
 import styles from './trackProfile.module.scss'
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import { RaceCategories } from '@/@types/types'
 import { fetchInstanceWithCookies } from '@/api/fetchInstances'
 import { useRouter } from 'next/navigation'
+import { useLoading } from '@/contexts/LoadingContext'
 
 export const CategoriesForm = ({
   categories,
@@ -14,10 +15,12 @@ export const CategoriesForm = ({
   trackId: string
 }) => {
   const router = useRouter()
+  const {setIsLoading} = useLoading()
   const [isCreateNew, setIsCreateNew] = useState(false)
 
   const createNewCategory = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setIsLoading(true)
     const target = e.target as HTMLFormElement
     const nameInput = target.elements.namedItem("name") as HTMLInputElement;
     const priceInput = target.elements.namedItem("price") as HTMLInputElement;
@@ -39,6 +42,7 @@ export const CategoriesForm = ({
 
   const updateCategory = async (categoryId: string, e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setIsLoading(true)
     const target = e.target as HTMLFormElement
     const nameInput = target.elements.namedItem("name") as HTMLInputElement;
     const priceInput = target.elements.namedItem("price") as HTMLInputElement;
@@ -55,6 +59,11 @@ export const CategoriesForm = ({
 
     router.refresh()
   }
+
+  useEffect(() => {
+    if (categories && categories.length) setIsLoading(false)
+  }, [categories])
+
   return (
     <div className={styles.categories}>
       <h2>Categorias:</h2>

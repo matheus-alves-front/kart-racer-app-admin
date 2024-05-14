@@ -5,13 +5,18 @@
   
   fieldset {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     padding: 0 2rem;
     padding-bottom: 1rem;
     justify-content: space-between;
 
     .result {
       flex-direction: row;
+      align-items: flex-start;
+      
+      span {
+        white-space: nowrap;
+      }
     }
     
     > div {
@@ -28,6 +33,7 @@
     
       label {
         text-align: center;
+        white-space: nowrap;
       }
     }
     
@@ -40,6 +46,7 @@
       font-size: 1rem;
       transition: .2s ease;
       margin-left: 1rem;
+      white-space: nowrap;
 
       &:hover {
         opacity: .8;

@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation"
 
 export const Header = () => {
   const pathName = usePathname()
-  console.log(pathName)
+
   return (
     <header className={styles.Header}>
       <nav>

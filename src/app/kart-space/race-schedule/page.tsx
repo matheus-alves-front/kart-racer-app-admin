@@ -1,8 +1,10 @@
 import { RaceCategories, RacesType, TrackType } from "@/@types/types";
 import { fetchInstanceWithCookies } from "@/api/fetchInstances";
+import Loading from "@/app/loading";
 import { RaceScheduleTabs } from "@/components/Races/RaceScheduleTabs";
 import { RaceScheduleForm } from "@/components/RaceScheduleForm/RaceScheduleForm";
 import { getAllCookies } from "@/hooks/useTokenCookies";
+import { Suspense } from "react";
 
 export default async function RaceSchedulePage() {
   const { trackId } = await getAllCookies() 
@@ -21,8 +23,10 @@ export default async function RaceSchedulePage() {
   return (
     <section>
       <h1 style={{textAlign: 'center'}}>Cronograma do dia</h1>
-      <RaceScheduleForm track={track} />
-      <RaceScheduleTabs trackId={track.id} races={races} categories={categories} />
+      <Suspense fallback={<Loading />}>
+        <RaceScheduleForm track={track} />
+        <RaceScheduleTabs trackId={track.id} races={races} categories={categories} />
+      </Suspense>
     </section>
   )
 }

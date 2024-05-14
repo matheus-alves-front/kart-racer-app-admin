@@ -5,6 +5,7 @@ import { michromaClassName } from "@/constants/font"
 import { fetchInstance } from "@/api/fetchInstances"
 import { useRouter } from "next/navigation"
 import { TrackType } from "@/@types/types"
+import { useLoading } from "@/contexts/LoadingContext"
 
 export const handleTime = async (input: string) => {
   let formattedTime;
@@ -24,6 +25,8 @@ export const EditForm = ({
   track: TrackType
 }) => {
   const router = useRouter()
+  const {setIsLoading} = useLoading()
+
   const [address, setAddress] = useState({
     street: track.address.street,
     city:   track.address.city,
@@ -42,6 +45,7 @@ export const EditForm = ({
 
   async function onSubmitUpdate (e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    setIsLoading(true)
     const target = e.target as HTMLFormElement
 
     const nameInput = target.elements.namedItem("name") as HTMLInputElement;
@@ -86,6 +90,7 @@ export const EditForm = ({
     if (registerResponse) {
       router.refresh()
     }
+    setIsLoading(false)
   }
 
   return (

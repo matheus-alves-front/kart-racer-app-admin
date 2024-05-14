@@ -4,14 +4,16 @@ import { michromaClassName } from "@/constants/font";
 import { fetchInstance } from "@/api/fetchInstances";
 import { useRouter } from "next/navigation";
 import { setCookies } from "@/hooks/useTokenCookies";
+import { useLoading } from "@/contexts/LoadingContext";
 
 
 export const LoginForm = () => {
   const router = useRouter()
-
+  const {setIsLoading} = useLoading()
 
   async function onSubmitLogin (e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
+    setIsLoading(true)
     const target = e.target as HTMLFormElement
 
     const emailInput = target.elements.namedItem("email") as HTMLInputElement;
@@ -26,16 +28,18 @@ export const LoginForm = () => {
       password: passwordInput.value,
     }
 
-    const registerResponse = await fetchInstance('/track-profile/login', {
+    const loginResponse = await fetchInstance('/track-profile/login', {
       method: 'POST',
       body: JSON.stringify(submitObject)
     })
 
-    if (registerResponse.token) {
-      await setCookies('loginToken', registerResponse.token)
-      await setCookies('trackId', registerResponse.trackProfile.id)
+    if (loginResponse.token) {
+      await setCookies('loginToken', loginResponse.token)
+      await setCookies('trackId', loginResponse.trackProfile.id)
       router.push('/kart-space/race-schedule')
     }
+
+    setIsLoading(false)
   }
 
   return (

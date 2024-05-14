@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Michroma } from "next/font/google";
 import "@/styles/globals.css";
+import { LoadingContextProvider } from "@/contexts/LoadingContext";
 
 const michroma = Michroma({ 
   style: 'normal',
@@ -22,7 +23,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={michroma.className}>{children}</body>
+      <body className={michroma.className}>
+        <LoadingContextProvider>
+          {children}
+        </LoadingContextProvider>
+      </body>
     </html>
   );
 }

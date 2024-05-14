@@ -5,6 +5,7 @@ import { michromaClassName } from "@/constants/font"
 import { ChangeEvent, useState } from "react"
 import { fetchInstanceWithCookies } from "@/api/fetchInstances"
 import { useRouter } from "next/navigation"
+import { useLoading } from "@/contexts/LoadingContext"
 
 export const RaceScheduleTabs = ({
   races,
@@ -16,6 +17,8 @@ export const RaceScheduleTabs = ({
   categories: RaceCategories[]
 }) => {
   const [activeRaceTab, setActiveRaceTab] = useState(races[0])
+
+  console.log(races)
   return (
     <div className={styles.Section}>
       <nav>
@@ -45,8 +48,11 @@ export const RaceTab = ({
   trackId: string,
   categories: RaceCategories[]
 }) => {
+  const {setIsLoading} = useLoading()
   const [isScheduled, setIsScheduled] = useState(race.isScheduled)
+  
   const onReservedChange = async (e: ChangeEvent<HTMLSelectElement>) => {
+    setIsLoading(true)
     const isReserved = e.target.value === 'true'
 
     await fetchInstanceWithCookies(`/track/${trackId}/races/${race.id}`, {
@@ -55,17 +61,21 @@ export const RaceTab = ({
         isReserved: isReserved
       })
     })
+    setIsLoading(false)
   }
 
   const onRacerHostChange = async (e: ChangeEvent<HTMLSelectElement>) => {
+    setIsLoading(true)
     const newRacerHost = e.target.value
     await fetchInstanceWithCookies(
       `track/${trackId}/races/changeHost/${race.id}/from/${race.racerHostProfile.id}/to/${newRacerHost}`, {
       method: 'POST',
     })
+    setIsLoading(false)
   }
 
   const scheduleRace = async (isScheduled: boolean) => {
+    setIsLoading(true)
     await fetchInstanceWithCookies(`/track/${trackId}/races/${race.id}`, {
       method: 'PATCH',
       body: JSON.stringify({
@@ -73,9 +83,11 @@ export const RaceTab = ({
       })
     })
     setIsScheduled(isScheduled)
+    setIsLoading(false)
   }
 
   const handleCategoryRace = async (e: ChangeEvent<HTMLSelectElement>) => {
+    setIsLoading(true)
     const categoryId = e.target.value
 
     if (!race.category) {
@@ -83,6 +95,7 @@ export const RaceTab = ({
         method: 'POST'
       })
 
+      setIsLoading(false)
       return
     }
 
@@ -90,6 +103,7 @@ export const RaceTab = ({
       `/track/${trackId}/races/${race.id}/changeCategory/from/${race.category.id}/to/${categoryId}`, {
       method: 'POST'
     })
+    setIsLoading(false)
   }
 
   return (
@@ -124,8 +138,18 @@ export const RaceTab = ({
         <div>
           <span>Reservado:</span>
           <select onChange={onReservedChange} className={michromaClassName} name="isReserved" id="isReservedSelect">
-              <option defaultChecked={race.isReserved} value="true">Sim</option>
-              <option defaultChecked={!race.isReserved} value="false">Não</option>
+              {race.isReserved 
+              ? 
+              <>
+                <option defaultChecked={race.isReserved} value="true">Sim</option>
+                <option value="false">Não</option>
+              </>
+              :
+              <>
+                <option defaultChecked={race.isReserved} value="false">Não</option>
+                <option value="true">Sim</option>
+              </>
+              }
           </select>
         </div>
         <div>
