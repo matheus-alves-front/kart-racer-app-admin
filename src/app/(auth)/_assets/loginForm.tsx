@@ -35,7 +35,7 @@ export const LoginForm = () => {
 
     if (loginResponse.token) {
       await setCookies('loginToken', loginResponse.token)
-      await setCookies('trackId', loginResponse.trackProfile.id)
+      await setCookies('trackId', loginResponse.trackProfileId ?? loginResponse.trackProfile.id)
       router.push('/kart-space/race-schedule')
     }
 

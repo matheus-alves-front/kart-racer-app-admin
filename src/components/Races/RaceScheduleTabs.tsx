@@ -2,7 +2,7 @@
 import { RaceCategories, RacesType } from "@/@types/types"
 import styles from './RaceScheduleTabs.module.scss'
 import { michromaClassName } from "@/constants/font"
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, useEffect, useState } from "react"
 import { fetchInstanceWithCookies } from "@/api/fetchInstances"
 import { useRouter } from "next/navigation"
 import { useLoading } from "@/contexts/LoadingContext"
@@ -105,6 +105,10 @@ export const RaceTab = ({
     })
     setIsLoading(false)
   }
+
+  useEffect(() => {
+    setIsScheduled(race.isScheduled)
+  }, [race])
 
   return (
     <div className={styles.RaceTab}>
